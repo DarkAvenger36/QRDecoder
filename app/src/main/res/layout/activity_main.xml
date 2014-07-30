@@ -38,9 +38,12 @@
         android:layout_below="@+id/label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:scrollbars="vertical"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:textStyle="italic"/>
+        android:textStyle="italic"
+        android:maxHeight="90dp"
+        android:autoLink="web"/>
 
 
 </RelativeLayout>
