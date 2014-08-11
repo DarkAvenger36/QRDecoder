@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.util.TimingLogger;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -87,7 +88,9 @@ public class MainActivity extends Activity {
                         // Get the path
                         String path = FileUtils.getPath(this, uri);
                         Log.d(LOG_TAG, "File Path: " + path);
+
                         decodeImage(path);
+
                     }catch (URISyntaxException e){
                         e.printStackTrace();
                     }
@@ -98,7 +101,9 @@ public class MainActivity extends Activity {
                 if (resultCode == Activity.RESULT_OK) {
                     Uri selectedImage = imageUri;
                     //Log.d(LOG_TAG, "Uri in resoult = " + selectedImage.toString());
+
                     decodeImage(selectedImage.getPath());
+
                 }
 
         }
@@ -122,6 +127,8 @@ public class MainActivity extends Activity {
 
 
     public void decodeImage(String path){
+
+        message.setText("");
 
         // Get the dimensions of the View
         int targetW = SCALEW;
@@ -154,6 +161,8 @@ public class MainActivity extends Activity {
         bmp.getPixels(pixels, 0 , width, 0, 0, width, height);
         //RGBufferedImageLuminanceSource src = new RGBufferedImageLuminanceSource(bmp);
 
+        TimingLogger timingLogger = new TimingLogger("TopicLogTag", "decode");
+
         RGBSource src = new RGBSource(width, height, pixels);
 
         //BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(src));
@@ -161,10 +170,14 @@ public class MainActivity extends Activity {
         //MyBinaryBitmap bitmap = new MyBinaryBitmap(new SimpleHybridBinarizer(src));
         MyBinaryBitmap bitmap = new MyBinaryBitmap(new RGBHybridBinarizer(src));
         HCCQRcodeReader reader = new HCCQRcodeReader();
-        Log.d(LOG_TAG, "prima del try");
+        //Log.d(LOG_TAG, "prima del try");
 
         try{
             Result result = reader.decode(bitmap);
+
+            timingLogger.addSplit("Dopo il decode");
+            timingLogger.dumpToLog();
+
             Global.text = result.getText();
             //byte[] rawBytes = result.getRawBytes();
             //BarcodeFormat format = result.getBarcodeFormat();
@@ -179,6 +192,7 @@ public class MainActivity extends Activity {
         }catch (FormatException fe){
             fe.printStackTrace();
         }
+
         imageView.setImageBitmap(bmp);
     }
 
