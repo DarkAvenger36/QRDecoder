@@ -1,10 +1,7 @@
 package com.example.lorenzo.qrdecoder;
 
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -23,27 +20,15 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import main.java.com.google.zxing.BarcodeFormat;
-import main.java.com.google.zxing.BinaryBitmap;
 import main.java.com.google.zxing.ChecksumException;
 import main.java.com.google.zxing.FormatException;
 import main.java.com.google.zxing.MyBinaryBitmap;
 import main.java.com.google.zxing.NotFoundException;
-import main.java.com.google.zxing.RGBLuminanceSource;
 import main.java.com.google.zxing.RGBSource;
-import main.java.com.google.zxing.Reader;
 import main.java.com.google.zxing.Result;
-import main.java.com.google.zxing.ResultPoint;
-import main.java.com.google.zxing.common.HybridBinarizer;
 import main.java.com.google.zxing.common.RGBHybridBinarizer;
-import main.java.com.google.zxing.common.RGBufferedImageLuminanceSource;
-import main.java.com.google.zxing.common.SimpleHybridBinarizer;
 import main.java.com.google.zxing.hccqrcode.HCCQRcodeReader;
-import main.java.com.google.zxing.qrcode.QRCodeReader;
 
 
 public class MainActivity extends Activity {
@@ -151,9 +136,9 @@ public class MainActivity extends Activity {
         bmOptions.inSampleSize = scaleFactor;
         bmOptions.inPurgeable = true;
 
-        Log.d(LOG_TAG, "PATH = " + path);
+        //Log.d(LOG_TAG, "PATH = " + path);
         bmp = BitmapFactory.decodeFile(path, bmOptions);
-        Log.d(LOG_TAG, "dopo il decode");
+        //Log.d(LOG_TAG, "dopo il decode");
 
         int width = bmp.getWidth();
         int height = bmp.getHeight();
@@ -230,14 +215,14 @@ public class MainActivity extends Activity {
         File dir = new File(file_path);
         if (!dir.exists()) {
             dir.mkdirs();
-            Log.d(LOG_TAG, "Sono nell'if");
+            //Log.d(LOG_TAG, "Sono nell'if");
         }
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         File photo = new File(file_path,  "Pic.jpg");
         intent.putExtra(MediaStore.EXTRA_OUTPUT,
                 Uri.fromFile(photo));
         imageUri = Uri.fromFile(photo);
-        Log.d(LOG_TAG, "URI = " + imageUri.toString());
+        //Log.d(LOG_TAG, "URI = " + imageUri.toString());
         startActivityForResult(intent, TAKE_PICTURE);
     }
 
